@@ -32,3 +32,10 @@ E:\SE100.O22\student_management\student_management_backend\obj\Debug\net8.0\refi
 E:\SE100.O22\student_management\student_management_backend\obj\Debug\net8.0\student_management_backend.pdb
 E:\SE100.O22\student_management\student_management_backend\obj\Debug\net8.0\student_management_backend.genruntimeconfig.cache
 E:\SE100.O22\student_management\student_management_backend\obj\Debug\net8.0\ref\student_management_backend.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.Design.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Npgsql.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.Design.dll
