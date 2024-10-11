@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./student_management_backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80" # Map the host port 5000 to the container port 80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - POSTGRES_DATABASE_URL=Host=ep-holy-salad-30134767.ap-southeast-1.aws.neon.tech;Port=5432;Database=student_management;Username=LeDangThuong;Password=H9fwdtuoFG1c
+    env_file:
+      - ./student_management_backend/.env
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: student_management
+      POSTGRES_USER: LeDangThuong
+      POSTGRES_PASSWORD: H9fwdtuoFG1c
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
