@@ -9,6 +9,5 @@ public class SupabaseDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        // Các cấu hình khác nếu cần
     }
 }

@@ -1,59 +1,61 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
+using BCrypt.Net;
 
-[Route("api/[controller]")]
-[ApiController]
-public class AuthController : ControllerBase
+namespace YourProject.Controllers
 {
-    private readonly NeonDbContext _neonContext;
-    private readonly SupabaseDbContext _supabaseContext;
-
-    public AuthController(NeonDbContext neonContext, SupabaseDbContext supabaseContext)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
     {
-        _neonContext = neonContext;
-        _supabaseContext = supabaseContext;
-    }
+        private readonly NeonDbContext _context;
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register(User user)
-    {
-        if (_neonContext.Users.Any(u => u.Username == user.Username))
-            return BadRequest("User already exists.");
+        public AuthController(NeonDbContext context)
+        {
+            _context = context;
+        }
 
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-        _neonContext.Users.Add(user);
-        await _neonContext.SaveChangesAsync();
-        return Ok("User registered successfully.");
-    }
+        // Sign Up Endpoint
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            if (_context.Users.Any(u => u.Username == request.Username))
+                return BadRequest("User already exists.");
 
-    [HttpPost("login")]
-    public IActionResult Login(User loginRequest)
-    {
-        var user = _neonContext.Users.FirstOrDefault(u => u.Username == loginRequest.Username);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password))
-            return Unauthorized("Invalid credentials.");
+            var newUser = new User
+            {
+                Username = request.Username,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
+            };
 
-        return Ok("Login successful.");
-    }
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
 
-    [HttpPost("register-supabase")]
-    public async Task<IActionResult> RegisterSupabase(User user)
-    {
-        if (_supabaseContext.Users.Any(u => u.Username == user.Username))
-            return BadRequest("User already exists.");
+            var response = new LoginResponse
+            {
+                Id = newUser.Id,
+                Username = newUser.Username
+            };
 
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-        _supabaseContext.Users.Add(user);
-        await _supabaseContext.SaveChangesAsync();
-        return Ok("User registered successfully on Supabase.");
-    }
+            return Ok(response);
+        }
 
-    [HttpPost("login-supabase")]
-    public IActionResult LoginSupabase(User loginRequest)
-    {
-        var user = _supabaseContext.Users.FirstOrDefault(u => u.Username == loginRequest.Username);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password))
-            return Unauthorized("Invalid credentials for Supabase.");
+        // Sign In Endpoint
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginRequest request)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Username == request.Username);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+                return Unauthorized("Invalid credentials.");
 
-        return Ok("Login successful on Supabase.");
+            var response = new LoginResponse
+            {
+                Id = user.Id,
+                Username = user.Username
+            };
+
+            return Ok(response);
+        }
     }
 }
