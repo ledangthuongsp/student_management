@@ -6,7 +6,7 @@ services:
       context: ./student_management_backend
       dockerfile: Dockerfile
     ports:
-      - "5000:80" # Map port 5000 trên máy host sang port 80 của container
+      - "5000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - POSTGRES_DATABASE_URL=${POSTGRES_DATABASE_URL}

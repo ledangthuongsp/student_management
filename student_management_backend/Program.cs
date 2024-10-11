@@ -23,12 +23,6 @@ Env.Load();
 var neonConnectionString = Env.GetString("POSTGRES_DATABASE_URL");
 var supabaseConnectionString = Env.GetString("SUPABASE_DATABASE_URL");
 
-// Kiểm tra xem chuỗi kết nối có được lấy ra không
-if (string.IsNullOrEmpty(neonConnectionString))
-{
-    throw new InvalidOperationException("The connection string for NEON database is not initialized.");
-}
-
 // Đăng ký các DbContext
 builder.Services.AddDbContext<NeonDbContext>(options =>
     options.UseNpgsql(neonConnectionString));
