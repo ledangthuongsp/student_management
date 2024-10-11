@@ -1,2 +1,2 @@
 # student_management
-Website with Next, .NET, Postgre, Superbase, 
+Website with Next, .NET, PostgreSQL, Supabase, 
