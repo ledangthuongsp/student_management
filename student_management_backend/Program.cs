@@ -12,6 +12,9 @@ builder.Services.AddCors(options =>
             policy.AllowAnyOrigin()
                   .AllowAnyMethod()
                   .AllowAnyHeader();
+            policy.WithOrigins("https://student-management-se100.onrender.com")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
         });
 });
 
