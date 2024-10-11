@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /app
 
 # Copy file csproj và khôi phục các dependencies
-COPY student_management_backend.csproj ./
+COPY student_management_backend/student_management_backend.csproj ./
 RUN dotnet restore
 
 # Copy toàn bộ mã nguồn và build ứng dụng
