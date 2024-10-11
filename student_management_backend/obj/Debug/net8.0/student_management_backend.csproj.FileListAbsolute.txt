@@ -39,3 +39,6 @@ E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Micr
 E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Npgsql.dll
 E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.Design.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\DotNetEnv.dll
+E:\SE100.O22\student_management\student_management_backend\bin\Debug\net8.0\Sprache.dll
