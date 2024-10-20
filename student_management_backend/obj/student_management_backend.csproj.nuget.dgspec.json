@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {}
+    "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {}
   },
   "projects": {
-    "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {
+    "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
+        "projectUniqueName": "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
         "projectName": "student_management_backend",
-        "projectPath": "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
+        "projectPath": "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
         "packagesPath": "C:\\Users\\ledan\\.nuget\\packages\\",
-        "outputPath": "e:\\SE100.O22\\student_management\\student_management_backend\\obj\\",
+        "outputPath": "E:\\SE100.O22\\student_management\\student_management_backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ledan\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -59,11 +59,17 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.10, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[8.0.10, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL.Design": {
               "target": "Package",
