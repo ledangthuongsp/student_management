@@ -16,7 +16,7 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # Mở port mà ứng dụng sẽ chạy
-EXPOSE 80
+EXPOSE 5025
 
 # Thiết lập entry point cho container
 ENTRYPOINT ["dotnet", "student_management_backend.dll"]

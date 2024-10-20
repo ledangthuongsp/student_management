@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Đọc biến môi trường từ file .env
 Env.Load();
-var port = Environment.GetEnvironmentVariable("PORT") ?? "80"; // Lấy cổng từ biến môi trường PORT hoặc mặc định là 80
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5025"; // Sử dụng cổng 5025
 
 // Thêm dịch vụ CORS
 builder.Services.AddCors(options =>
@@ -54,11 +54,11 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // Hiển
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-        c.RoutePrefix = "swagger"; // Để hiển thị Swagger tại root URL
+        c.RoutePrefix = string.Empty; // Để hiển thị Swagger tại root URL
     });
 }
 
-// Lắng nghe cổng
+// Lắng nghe cổng 5025
 app.Urls.Add($"http://*:{port}");
 
 app.UseHttpsRedirection();

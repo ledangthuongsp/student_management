@@ -6,7 +6,7 @@ services:
       context: ./student_management_backend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "5025:5025"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - POSTGRES_DATABASE_URL=${POSTGRES_DATABASE_URL}
