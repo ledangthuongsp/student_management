@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {}
+    "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {}
   },
   "projects": {
-    "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {
+    "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
+        "projectUniqueName": "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
         "projectName": "student_management_backend",
-        "projectPath": "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
+        "projectPath": "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
         "packagesPath": "C:\\Users\\ledan\\.nuget\\packages\\",
-        "outputPath": "E:\\SE100.O22\\student_management\\student_management_backend\\obj\\",
+        "outputPath": "e:\\SE100.O22\\student_management\\student_management_backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ledan\\AppData\\Roaming\\NuGet\\NuGet.Config",

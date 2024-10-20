@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "o8BXHrmq1EA=",
+  "dgSpecHash": "g0/R7o0B16k=",
   "success": true,
-  "projectFilePath": "E:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
+  "projectFilePath": "e:\\SE100.O22\\student_management\\student_management_backend\\student_management_backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ledan\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\ledan\\.nuget\\packages\\dotnetenv\\3.1.1\\dotnetenv.3.1.1.nupkg.sha512",

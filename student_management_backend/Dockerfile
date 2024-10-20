@@ -3,11 +3,11 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 # Copy file csproj và khôi phục các dependencies
-COPY student_management_backend/student_management_backend.csproj ./
+COPY student_management_backend/*.csproj ./  
 RUN dotnet restore
 
 # Copy toàn bộ mã nguồn và build ứng dụng
-COPY . ./
+COPY ./student_management_backend ./  
 RUN dotnet publish -c Release -o out
 
 # Sử dụng hình ảnh runtime nhỏ hơn để chạy ứng dụng
