@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // Hiển
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-        c.RoutePrefix = string.Empty; // Để hiển thị Swagger tại root URL
+        c.RoutePrefix = "swagger"; // Để hiển thị Swagger tại root URL
     });
 }
 
