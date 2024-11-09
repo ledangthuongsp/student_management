@@ -1,7 +1,5 @@
 public class Teacher : User
 {
-    public int TeacherId { get; set; }
-
     public string? CertificateUrl { get; set; }
 
     public string? Position { get; set; }

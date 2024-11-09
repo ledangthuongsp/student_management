@@ -26,6 +26,8 @@ namespace YourProject.Controllers
             var newUser = new User
             {
                 Username = request.Username,
+                Email = request.Email,
+                DayOfBirth = request.DateOfBirth,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 

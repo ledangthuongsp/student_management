@@ -1,0 +1,3 @@
+public class SchoolCouncil : User
+{
+}
