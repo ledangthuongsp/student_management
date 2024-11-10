@@ -6,6 +6,6 @@ public class Grade
     public int TeacherId { get; set; }
     public string Comment { get; set; }
 
-    public Student Student { get; set; }
-    public Teacher Teacher { get; set; }
+    public User Student { get; set; }
+    public User Teacher { get; set; }
 }

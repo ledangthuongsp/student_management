@@ -4,5 +4,5 @@
     public int TeacherId { get; set; }
 
     public Faculty Faculty { get; set; }
-    public Teacher Teacher { get; set; }
+    public User Teacher { get; set; }
 }

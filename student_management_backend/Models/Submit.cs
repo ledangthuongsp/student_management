@@ -6,6 +6,6 @@ public class Submit
     public string Description { get; set; }
     public string AttachFile { get; set; }
 
-    public Student Student { get; set; }
+    public User Student { get; set; }
     public Assignment Assignment { get; set; }
 }

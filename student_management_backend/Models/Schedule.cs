@@ -11,5 +11,5 @@ public class Schedule
 
     public Classroom Classroom { get; set; }
     public Subject Subject { get; set; }
-    public Teacher Teacher { get; set; }
+    public User Teacher { get; set; }
 }

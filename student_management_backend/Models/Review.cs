@@ -8,5 +8,5 @@ public class Review
 
     public Submit Submit { get; set; }
     public Assignment Assignment { get; set; }
-    public Teacher Teacher { get; set; }
+    public User Teacher { get; set; }
 }

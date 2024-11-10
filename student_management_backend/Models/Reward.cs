@@ -4,5 +4,5 @@ public class Reward
     public string RewardName { get; set; }
     public int StudentId { get; set; }
 
-    public Student Student { get; set; }
+    public User Student { get; set; }
 }

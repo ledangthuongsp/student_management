@@ -9,6 +9,6 @@ public class Assignment
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 
-    public Teacher Teacher { get; set; }
+    public User Teacher { get; set; }
     public Subject Subject { get; set; }
 }

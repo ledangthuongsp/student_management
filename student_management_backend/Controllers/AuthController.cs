@@ -25,9 +25,10 @@ namespace YourProject.Controllers
 
             var newUser = new User
             {
-                Username = request.Username,
+                UserName = request.Username,
                 Email = request.Email,
-                DayOfBirth = request.DateOfBirth,
+                FullName = request.FullName,
+                PhoneNumber = request.PhoneNumber,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 
@@ -37,7 +38,7 @@ namespace YourProject.Controllers
             var response = new LoginResponse
             {
                 Id = newUser.Id,
-                Username = newUser.Username
+                Username = newUser.UserName
             };
 
             return Ok(response);

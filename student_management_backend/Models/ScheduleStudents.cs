@@ -4,5 +4,5 @@
     public int StudentId { get; set; }
 
     public Schedule Schedule { get; set; }
-    public Student Student { get; set; }
+    public User Student { get; set; }
 }
