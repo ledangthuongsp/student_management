@@ -1,15 +1,12 @@
-public class Schedule
-{
-    public int Id { get; set; }
-    public int ClassroomId { get; set; }
-    public int SubjectId { get; set; }
-    public int TeacherId { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
-    public string DayOfWeek { get; set; }
-    public int Duration { get; set; }
 
-    public Classroom Classroom { get; set; }
-    public Subject Subject { get; set; }
-    public User Teacher { get; set; }
+namespace student_management_backend.Models;
+
+public class Schedule : AuditableEntity
+{
+    public int SchoolYearId { get; set; }
+    public int ClassId { get; set; }
+    public virtual SchoolYear SchoolYear { get; private set; } = default!;
+    public virtual Class Class { get; set; } = default!;
+
+    public virtual ICollection<ScheduleSubject> ScheduleSubjects { get; private set; } = default!;
 }

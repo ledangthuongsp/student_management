@@ -1,12 +1,13 @@
-public class Review
-{
-    public int Id { get; set; }
-    public string Description { get; set; }
-    public int SubmitId { get; set; }
-    public int AssignmentId { get; set; }
-    public int TeacherId { get; set; }
 
-    public Submit Submit { get; set; }
-    public Assignment Assignment { get; set; }
-    public User Teacher { get; set; }
+namespace student_management_backend.Models;
+
+public class Review : AuditableEntity
+{
+    public required double Score { get; set; }
+    public string Comment { get; set; } = default!;
+    public int TeacherId { get; set; }
+    public int SubmitId { get; set; }
+
+    public virtual Submit Submit { get; private set; } = default!;
+    public virtual User User { get; private set; } = default!;
 }
