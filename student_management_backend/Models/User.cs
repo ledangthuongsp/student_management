@@ -1,39 +1,20 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-public class User
+namespace student_management_backend.Models;
+
+public class User : AuditableEntity
 {
-    public int Id { get; set; }
-
-    public required string Username { get; set; }
-
-    public required string Password { get; set; }
-
-    public string? FullName { get; set; }
-
-    public string? PhoneNumber { get; set; }
-
     public required string Email { get; set; }
-
-    public required string DayOfBirth { get; set; }
-
-    public string? Gender { get; set; }
-
-    public string? Address { get; set; }
-
+    public required string Password { get; set; }
+    public required string FullName { get; set; }
+    public required string PhoneNumber { get; set; }
+    public required DateTime DateOfBirth { get; set; }
+    public EUserGender Gender { get; set; } = EUserGender.Male;
     public string? AvatarUrl { get; set; }
-
-    public string? PersonalId { get; set; }
-
-    // Các phương thức có thể là trừu tượng hoặc triển khai sẵn
-    // public void Login();  // Phương thức trừu tượng
-    // public void Register();
-
-    // // Phương thức triển khai sẵn
-    // public void Logout()
-    // {
-    //     // Logic logout
-    // }
-
-    // public void EditProfile();
+    public EUserRole Role { get; set; } = EUserRole.Student;
+    public int ClassId { get; set; }
+    public virtual Class Class { get; private set; } = default!;
+    public virtual ICollection<TeachClass> TeachClasses { get; private set; } = default!;
+    public virtual ICollection<Submit> Submits { get; private set; } = default!;
+    public virtual ICollection<Review> Reviews { get; private set; } = default!;
+    public virtual ICollection<Assignment> Assignments { get; private set; } = default!;
 }

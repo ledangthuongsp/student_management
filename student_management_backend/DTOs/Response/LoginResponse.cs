@@ -1,6 +1,7 @@
+using student_management_backend.Models;
+
 public class LoginResponse
 {
     public int Id { get; set; }
-    public string? Username { get; set; }
-    public string? Role { get; set; }
+    public EUserRole Role { get; set; }
 }
