@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using student_management_backend.Models;
+using student_management_backend.Seed;
 
 public class NeonDbContext : DbContext
 {
@@ -23,6 +24,8 @@ public class NeonDbContext : DbContext
         modelBuilder.Entity<User>(b => {
             b.ToTable("users");
             b.HasKey(x => x.Id);
+            b.HasIndex(x => x.PhoneNumber).IsUnique();
+            b.HasIndex(x => x.Email).IsUnique();
             b.HasOne(x => x.Class).WithMany(x => x.User).HasForeignKey(x => x.ClassId);
             b.HasMany(x => x.TeachClasses).WithOne(x => x.Teacher).HasForeignKey(x => x.TeacherId);
             b.HasMany(x => x.Submits).WithOne(x => x.Student).HasForeignKey(x => x.StudentId);
@@ -69,7 +72,7 @@ public class NeonDbContext : DbContext
         modelBuilder.Entity<ScheduleSubject>(b =>
         {
             b.ToTable("schedule_subjects");
-            b.HasKey(x => new { x.SubjectId, x.ScheduleId });
+            b.HasKey(x => new { x.SubjectId, x.ScheduleId, x.DayOfWeek });
             b.HasOne(x => x.Subject).WithMany(x => x.ScheduleSubjects).HasForeignKey(x => x.SubjectId);
             b.HasOne(x => x.Schedule).WithMany(x => x.ScheduleSubjects).HasForeignKey(x => x.ScheduleId);
         });
@@ -106,5 +109,7 @@ public class NeonDbContext : DbContext
             b.HasOne(x => x.Teacher).WithMany(x => x.TeachClasses).HasForeignKey(x => x.TeacherId);
             b.HasOne(x => x.Class).WithMany(x => x.TeachClasses).HasForeignKey(x => x.ClassId);
         });
+
+        new DbInitializer(modelBuilder).Seed();
     }
 }
