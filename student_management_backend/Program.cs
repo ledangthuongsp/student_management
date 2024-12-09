@@ -1,5 +1,6 @@
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using student_management_backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddCors(options =>
                   .WithOrigins("https://student-management-se100.onrender.com");
         });
 });
+
+builder.Services.AddScoped<ExceptionMiddleware>();
 
 #region Đây là phần kết nối CSDL
 
@@ -63,5 +66,6 @@ app.Urls.Add($"http://*:{port}");
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 app.Run();
