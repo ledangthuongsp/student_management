@@ -104,7 +104,7 @@ public class AssignmentController : ControllerBase
             Description = body.Description ?? "",
             DueDate = body.DueDate,
             SubjectId = body.SubjectId,
-            //TeacherId = body.TeacherId,
+            TeacherId = body.TeacherId,
             ClassId = body.ClassId
         };
 
