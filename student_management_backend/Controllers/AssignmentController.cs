@@ -85,7 +85,7 @@ public class AssignmentController : ControllerBase
         return assignment;
     }
 
-    [HttpPost()]
+    [HttpPost("")]
     public async Task<IActionResult> CreateAssignment([FromBody] CreateAssignmentRequest body)
     {
         bool isParsingSuccedded = Enum.TryParse(body.Type, out EAssignmentType type);

@@ -4,7 +4,7 @@ namespace student_management_backend.Models;
 public class Review : AuditableEntity
 {
     public required double Score { get; set; }
-    public string Comment { get; set; } = default!;
+    public string? Comment { get; set; } = default!;
     public int TeacherId { get; set; }
     public int SubmitId { get; set; }
 
