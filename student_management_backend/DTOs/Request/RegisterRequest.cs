@@ -1,8 +1,10 @@
+using student_management_backend.Models;
+
 public class RegisterRequest
 {
-    public required string Password { get; set; }
-    public required string Email { get; set; }
-    public required DateTime DateOfBirth { get; set; }
-    public required string FullName { get; set; }
-    public required string PhoneNumber { get; set; }
+    public string FullName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
+    public EUserRole Role { get; set; }  // Thêm Role để xác định loại người dùng khi đăng ký
 }
