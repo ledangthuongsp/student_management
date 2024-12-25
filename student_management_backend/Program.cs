@@ -28,7 +28,26 @@ builder.Services.AddScoped<ExceptionMiddleware>();
 // Lấy chuỗi kết nối từ file .env
 var neonConnectionString = Env.GetString("POSTGRES_DATABASE_URL");
 var supabaseConnectionString = Env.GetString("SUPABASE_DATABASE_URL");
-
+#region Phần kết nối Swagger
+// Cấu hình các dịch vụ
+builder.Services.AddSingleton<OtpService>(); // Thêm OtpService
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c=>
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Spotify Backend Remake", // Đặt tên mới cho Swagger
+        Version = "v1",
+        Description = "This API is used for managing music data.",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Le Dang Thuong",
+            Email = "ledangthuongsp@gmail.com",
+            Url = new Uri("https://ledangthuongsp.github.io/ThuongProfile")
+        }
+    })
+);
+#endregion
 // Đăng ký các DbContext
 builder.Services.AddDbContext<NeonDbContext>(options =>
     options.UseNpgsql(neonConnectionString));
