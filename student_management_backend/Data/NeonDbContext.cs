@@ -2,10 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using student_management_backend.Models;
 using student_management_backend.Seed;
 
-public class NeonDbContext : DbContext
+public class NeonDbContext(DbContextOptions<NeonDbContext> options) : DbContext(options)
 {
-    public NeonDbContext(DbContextOptions<NeonDbContext> options) : base(options) { }
-
     public DbSet<User> User { get; set; }
     public DbSet<Assignment> Assignment { get; set; }
     public DbSet<Class> Class { get; set; }

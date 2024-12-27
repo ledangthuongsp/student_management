@@ -3,12 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using student_management_backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+// Thêm các dịch vụ cần thiết cho Authorization
+builder.Services.AddAuthorization();
 
+// Thêm các dịch vụ khác như AddAuthentication, AddControllers, AddDbContext, v.v.
+builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new EUserRoleConverter()); });
 // Đọc biến môi trường từ file .env
 Env.Load();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5025"; // Sử dụng cổng 5025
 
-// Thêm dịch vụ CORS
+// Đăng ký dịch vụ
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddSingleton<OtpService>(); // Thêm OtpService
+
+// Cấu hình CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
@@ -21,37 +29,40 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddScoped<ExceptionMiddleware>();
-
-#region Đây là phần kết nối CSDL
-
-// Lấy chuỗi kết nối từ file .env
+// Kết nối CSDL
 var neonConnectionString = Env.GetString("POSTGRES_DATABASE_URL");
 var supabaseConnectionString = Env.GetString("SUPABASE_DATABASE_URL");
 
-// Đăng ký các DbContext
 builder.Services.AddDbContext<NeonDbContext>(options =>
     options.UseNpgsql(neonConnectionString));
 
 builder.Services.AddDbContext<SupabaseDbContext>(options =>
     options.UseNpgsql(supabaseConnectionString));
-#endregion
 
-#region Phần kết nối Swagger
-// Cấu hình các dịch vụ
-builder.Services.AddControllers();
+// Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-#endregion
+builder.Services.AddSwaggerGen(c =>
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Student Management API",
+        Version = "v1",
+        Description = "This API is used for managing student data.",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Le Dang Thuong",
+            Email = "ledangthuongsp@gmail.com",
+            Url = new Uri("https://ledangthuongsp.github.io/ThuongProfile")
+        }
+    })
+);
 
 var app = builder.Build();
 
 // Sử dụng CORS
 app.UseCors("AllowAllOrigins");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // Hiển thị Swagger cả trong môi trường production
+// Hiển thị Swagger ở cả môi trường production và development
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
@@ -61,7 +72,6 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // Hiển
     });
 }
 
-// Lắng nghe cổng 5025
 app.Urls.Add($"http://*:{port}");
 
 app.UseHttpsRedirection();
