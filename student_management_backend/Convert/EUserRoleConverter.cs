@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using student_management_backend.Models;
+using student_management_backend.Core.Models;
 
 public class EUserRoleConverter : JsonConverter<EUserRole>
 {

@@ -1,4 +1,4 @@
-using student_management_backend.Models;
+using student_management_backend.Core.Models;
 
 public class RegisterRequest
 {

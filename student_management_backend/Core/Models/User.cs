@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace student_management_backend.Models;
+namespace student_management_backend.Core.Models;
 
 public class User : AuditableEntity
-{   
+{
     [ProtectedPersonalData]
     public string? Email { get; set; }
     public string? Password { get; set; }
@@ -15,7 +15,7 @@ public class User : AuditableEntity
     public string? PhoneNumber { get; set; }
     public DateTime DateOfBirth { get; set; }
     public EUserGender Gender { get; set; } = EUserGender.Male;
-    public string? Address {get; set;}
+    public string? Address { get; set; }
     public string? AvatarUrl { get; set; }
     public EUserRole Role { get; set; } = EUserRole.Student;
     public int? ClassId { get; set; }
