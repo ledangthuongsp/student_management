@@ -75,6 +75,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 app.Urls.Add($"http://*:{port}");
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
