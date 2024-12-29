@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace student_management_backend.Models;
+namespace student_management_backend.Core.Models;
 
 public abstract class AuditableEntity
 {
