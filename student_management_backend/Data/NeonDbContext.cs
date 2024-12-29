@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using student_management_backend.Models;
+using student_management_backend.Core.Models;
 using student_management_backend.Seed;
 
 public class NeonDbContext(DbContextOptions<NeonDbContext> options) : DbContext(options)

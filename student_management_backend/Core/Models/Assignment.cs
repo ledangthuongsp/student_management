@@ -1,13 +1,12 @@
-
 using System.Collections.ObjectModel;
 
-namespace student_management_backend.Models;
+namespace student_management_backend.Core.Models;
 
 public class Assignment : AuditableEntity
 {
     public required string Title { get; set; }
     public int Grade { get; set; }
-    public int Semester {  get; set; }
+    public int Semester { get; set; }
     public EAssignmentType Type { get; set; } = EAssignmentType.FifteenMinute;
     public string Description { get; set; } = default!;
     public DateTime DueDate { get; set; }

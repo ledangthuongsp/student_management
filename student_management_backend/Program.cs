@@ -1,20 +1,31 @@
 using DotNetEnv;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using student_management_backend.Config.Auth;
 using student_management_backend.Middleware;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-// Thêm các dịch vụ cần thiết cho Authorization
-builder.Services.AddAuthorization();
+// Thêm các dịch vụ cần thiết cho Authorization, Authentication
+builder.Services.AddAuthorization()
+                .AddJwtAuth(builder.Configuration);
 
 // Thêm các dịch vụ khác như AddAuthentication, AddControllers, AddDbContext, v.v.
-builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new EUserRoleConverter()); });
+builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new EUserRoleConverter());
+                });
 // Đọc biến môi trường từ file .env
 Env.Load();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5025"; // Sử dụng cổng 5025
 
 // Đăng ký dịch vụ
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-builder.Services.AddSingleton<OtpService>(); // Thêm OtpService
+builder.Services.AddScoped<ExceptionMiddleware>()
+                .AddSingleton<OtpService>() // Thêm OtpService
+                .AddSingleton<IJwtTokenService, JwtTokenService>();
 
 // Cấu hình CORS
 builder.Services.AddCors(options =>
@@ -42,19 +53,44 @@ builder.Services.AddDbContext<SupabaseDbContext>(options =>
 // Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "Student Management API",
-        Version = "v1",
-        Description = "This API is used for managing student data.",
-        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
         {
-            Name = "Le Dang Thuong",
-            Email = "ledangthuongsp@gmail.com",
-            Url = new Uri("https://ledangthuongsp.github.io/ThuongProfile")
-        }
-    })
+            Title = "Student Management API",
+            Version = "v1",
+            Description = "This API is used for managing student data.",
+            Contact = new Microsoft.OpenApi.Models.OpenApiContact
+            {
+                Name = "Le Dang Thuong",
+                Email = "ledangthuongsp@gmail.com",
+                Url = new Uri("https://ledangthuongsp.github.io/ThuongProfile")
+            }
+        });
+        var jwtSecurityScheme = new OpenApiSecurityScheme
+        {
+            BearerFormat = "JWT",
+            Name = "JWT Authentication",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = JwtBearerDefaults.AuthenticationScheme,
+            Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+
+            Reference = new OpenApiReference
+            {
+                Id = JwtBearerDefaults.AuthenticationScheme,
+                Type = ReferenceType.SecurityScheme
+            }
+        };
+
+        c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            { jwtSecurityScheme, Array.Empty<string>() }
+        });
+    }
 );
+
 
 var app = builder.Build();
 

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using student_management_backend.DTOs.Request;
 using student_management_backend.Common.Exceptions;
-using student_management_backend.Models;
+using student_management_backend.Core.Models;
 using student_management_backend.DTOs.Response;
 
 namespace student_management_backend.Controllers;

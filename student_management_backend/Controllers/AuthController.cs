@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using student_management_backend.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Net;
+using student_management_backend.Common.Exceptions;
+using student_management_backend.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace student_management_backend.Controllers
 {
@@ -12,71 +14,81 @@ namespace student_management_backend.Controllers
     {
         private readonly NeonDbContext _context;
         private readonly OtpService _otpService;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IJwtTokenService _jwtTokenService;
 
-        public AuthController(NeonDbContext context, OtpService otpService, IPasswordHasher passwordHasher)
+        public AuthController(NeonDbContext context, OtpService otpService, IJwtTokenService jwtTokenService)
         {
             _context = context;
             _otpService = otpService;
-            _passwordHasher = passwordHasher;
+            _jwtTokenService = jwtTokenService;
         }
 
         // Đăng ký người dùng mới
-        [HttpPost("register")] public async Task<IActionResult> Register([FromBody] RegisterRequest request, [FromQuery] EUserRole? role) { 
-            var currentUser = await GetCurrentUser(); 
-            // Lấy thông tin người đăng nhập hiện tại 
-            if (currentUser?.Role != EUserRole.Council) { 
-                return Unauthorized("You do not have permission to add users."); 
-            } 
-            if (request.Password != request.ConfirmPassword) { 
-                return BadRequest("Password and Confirm Password do not match."); 
-            } 
-            if (await _context.User.AnyAsync(u => u.Email == request.Email)) {
-                return BadRequest("Email already exists."); 
-            } // Kiểm tra và xử lý Role nếu được truyền từ query string (FromQuery) 
-            if (!role.HasValue || !Enum.IsDefined(typeof(EUserRole), role.Value)) { 
-                return BadRequest("Invalid role."); 
-                } 
-            var hashedPassword = _passwordHasher.HashPassword(request.Password); 
-            var user = new User { 
-                FullName = request.FullName, 
-                Email = request.Email, 
-                Password = hashedPassword, 
-                Role = role.Value, 
-                }; 
-            _context.User.Add(user); await _context.SaveChangesAsync(); 
+        [Authorize(Roles = nameof(EUserRole.Council))]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            var currentUser = User;
+
+            if (request.Password != request.ConfirmPassword)
+            {
+                throw new BadRequestException("Password and Confirm Password do not match.");
+            }
+
+            if (await _context.User.AnyAsync(u => u.Email == request.Email))
+            {
+                throw new BadRequestException("Email already exists.");
+            }
+
+            if (!Enum.IsDefined(typeof(EUserRole), request.Role))
+            {
+                throw new BadRequestException("Invalid role.");
+            }
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+            var user = new User
+            {
+                FullName = request.FullName,
+                Email = request.Email,
+                Password = hashedPassword,
+                Role = request.Role,
+            };
+
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+            
             return Ok("User registered successfully.");
         }
 
         // Đăng nhập
         [HttpPost("sign-in")]
-        public async Task<IActionResult> SignIn([FromBody] LoginRequest request)
+        public async Task<LoginResponse> SignIn([FromBody] LoginRequest request)
         {
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == request.Email);
-            if (user == null)
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == request.Email) ?? throw new NotFoundException("User not found.");
+            
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
             {
-                return NotFound("User not found.");
+                throw new UnauthorizedException("Invalid password.");
             }
 
-            if (!_passwordHasher.VerifyPassword(request.Password, user.Password))
-            {
-                return Unauthorized("Invalid password.");
-            }
+            var token = _jwtTokenService.GenerateToken(user);
 
-            return Ok("User signed in successfully.");
+            return new LoginResponse() 
+            {   
+                Id = user.Id,
+                Role = user.Role,
+                FullName = user.FullName,
+                Token = token.token,
+                TokenExpiryTime = token.tokeExpiryTime
+            };
         }
 
         // Quên mật khẩu - Gửi OTP
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == request.Email);
-
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == request.Email) ?? throw new NotFoundException("User not found.");
             var otp = _otpService.GenerateOtp(request.Email);
             SendEmail(request.Email, otp);
 
@@ -89,7 +101,7 @@ namespace student_management_backend.Controllers
         {
             if (!_otpService.ValidateOtp(request.Email, request.Otp))
             {
-                return BadRequest("Invalid or expired OTP.");
+                throw new BadRequestException("Invalid or expired OTP.");
             }
 
             return Ok("OTP verified successfully.");
@@ -101,17 +113,12 @@ namespace student_management_backend.Controllers
         {
             if (request.NewPassword != request.ConfirmNewPassword)
             {
-                return BadRequest("New Password and Confirm Password do not match.");
+                throw new BadRequestException("New Password and Confirm Password do not match.");
             }
 
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == request.Email); // Đảm bảo tên bảng là "User" không phải "Users"
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == request.Email) ?? throw new NotFoundException("User not found."); // Đảm bảo tên bảng là "User" không phải "Users"
 
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
-            user.Password = _passwordHasher.HashPassword(request.NewPassword);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
             await _context.SaveChangesAsync();
 
             return Ok("Password reset successfully.");
@@ -137,21 +144,6 @@ namespace student_management_backend.Controllers
 
             mailMessage.To.Add(toEmail);
             smtpClient.Send(mailMessage);
-        }
-
-        // Giả sử bạn có một phương thức để lấy thông tin người dùng hiện tại
-        private async Task<User> GetCurrentUser()
-        {
-            var email = User?.Identity?.Name;  // Hoặc lấy từ JWT token, session, v.v.
-
-            if (string.IsNullOrEmpty(email))
-            {
-                return null; // Nếu không tìm thấy email người dùng, trả về null.
-            }
-
-            var currentUser = await _context.User.FirstOrDefaultAsync(u => u.Email == email);
-
-            return currentUser;
         }
     }
 }

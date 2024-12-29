@@ -1,4 +1,4 @@
-﻿namespace student_management_backend.Models;
+﻿namespace student_management_backend.Core.Models;
 public class SchoolYear : AuditableEntity
 {
     public required string StartSchoolYear { get; set; }

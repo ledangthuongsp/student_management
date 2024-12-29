@@ -1,4 +1,4 @@
-﻿using student_management_backend.Models;
+﻿using student_management_backend.Core.Models;
 
 namespace student_management_backend.DTOs.Request;
 

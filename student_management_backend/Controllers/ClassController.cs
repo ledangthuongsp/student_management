@@ -2,11 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using student_management_backend.Common.Exceptions;
 using student_management_backend.DTOs.Response;
-using student_management_backend.Models;
+using student_management_backend.Core.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace student_management_backend.Controllers;
 
+[Authorize]
 [Route("api/class")]
 [ApiController]
 public class ClassController : ControllerBase
