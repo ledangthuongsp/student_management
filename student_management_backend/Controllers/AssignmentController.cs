@@ -85,6 +85,39 @@ public class AssignmentController : ControllerBase
         return assignment;
     }
 
+    [HttpGet("total")]
+    public async Task<int> GetTotalAssignments()
+    {
+        var assignment = await _context.Assignment
+           .Include(x => x.Subject)
+           .ThenInclude(x => x.Assignments)
+           .ThenInclude(x => x.User)
+           .Select(x => new AssignmentDetailResponse()
+           {
+               Id = x.Id,
+               Title = x.Title,
+               Grade = x.Grade,
+               Semester = x.Semester,
+               Type = ((EAssignmentType)x.Type).ToString(),
+               Description = x.Description,
+               DueDate = x.DueDate,
+               Classroom = new AssignmentDetailClassResponse()
+               {
+                   ClassName = x.Class.ClassName,
+               },
+               Subject = new AssignmentDetailSubjectResponse()
+               {
+                   Title = x.Subject.Title,
+               },
+               Teacher = new AssignmentDetailTeacherResponse()
+               {
+                   FullName = x.User.FullName
+               }
+           }).ToListAsync() ?? throw new NotFoundException("Assignment doesn't exist");
+
+        return assignment.Count();
+    }
+
     [HttpPost("")]
     public async Task<IActionResult> CreateAssignment([FromBody] CreateAssignmentRequest body)
     {
