@@ -19,8 +19,8 @@ public class DbInitializer
             new SchoolYear()
             {
                 Id = 1,
-                StartSchoolYear = "2023",
-                EndSchoolYear = "2026",
+                StartSchoolYear = DateTime.UtcNow.Year,
+                EndSchoolYear = DateTime.UtcNow.AddYears(3).Year,
             });
 
         _modelBuilder.Entity<Class>().HasData(
@@ -36,8 +36,10 @@ public class DbInitializer
             new Schedule()
             {
                 Id = 1,
-                SchoolYearId = 1,
                 ClassId = 1,
+                Grade = 10,
+                StartApplyingDate = DateTime.UtcNow,
+                EndApplyingDate = DateTime.UtcNow.AddYears(1),
             });
 
         _modelBuilder.Entity<Subject>().HasData(

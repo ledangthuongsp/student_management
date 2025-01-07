@@ -9,7 +9,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 // Thêm các dịch vụ cần thiết cho Authorization, Authentication
-builder.Services.AddAuthorization()
+builder.Services.AddAuthorization(builder.Configuration)
                 .AddJwtAuth(builder.Configuration);
 
 // Thêm các dịch vụ khác như AddAuthentication, AddControllers, AddDbContext, v.v.
@@ -24,6 +24,7 @@ var port = Environment.GetEnvironmentVariable("PORT") ?? "5025"; // Sử dụng 
 
 // Đăng ký dịch vụ
 builder.Services.AddScoped<ExceptionMiddleware>()
+                .AddScoped<ParseClaimsMiddleware>()
                 .AddSingleton<OtpService>() // Thêm OtpService
                 .AddSingleton<IJwtTokenService, JwtTokenService>();
 
@@ -114,5 +115,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ParseClaimsMiddleware>();
 app.MapControllers();
 app.Run();

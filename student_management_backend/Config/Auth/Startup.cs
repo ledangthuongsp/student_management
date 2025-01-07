@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using student_management_backend.Core.Models;
 using System.Security.Claims;
 using System.Text;
 
@@ -42,5 +43,20 @@ internal static class Startup
                 };
             })
             .Services;
+    }
+
+    internal static IServiceCollection AddAuthorization(this IServiceCollection services, IConfiguration config)
+    {
+        return services.AddAuthorization(authorization =>
+        {
+            authorization.AddPolicy(nameof(EPolicyType.NotStudent), policy =>
+            {
+                policy.RequireRole(nameof(EUserRole.Teacher), nameof(EUserRole.Council));
+            });
+            authorization.AddPolicy(nameof(EPolicyType.All), policy =>
+            {
+                policy.RequireRole(nameof(EUserRole.Teacher), nameof(EUserRole.Council), nameof(EUserRole.Student));
+            });
+        });
     }
 }

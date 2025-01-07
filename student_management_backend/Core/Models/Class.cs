@@ -8,6 +8,6 @@ public class Class : AuditableEntity
     public virtual ICollection<User> User { get; private set; } = default!;
     public virtual ICollection<Assignment> Assignments { get; private set; } = default!;
     public virtual ICollection<TeachClass> TeachClasses { get; private set; } = default!;
-    public virtual Schedule Schedule { get; private set; } = default!;
+    public virtual ICollection<Schedule> Schedules { get; private set; } = default!;
     public virtual SchoolYear SchoolYear { get; set; } = default!;
 }

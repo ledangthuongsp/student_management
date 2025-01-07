@@ -2,6 +2,7 @@
 
 public class SchoolYearResponse
 {
-    public string StartSchoolYear { get; set; } = default!;
-    public string EndSchoolYear { get; set; } = default!;
+    public int SchoolYearId { get; set; }
+    public int StartSchoolYear { get; set; } = default!;
+    public int EndSchoolYear { get; set; } = default!;
 }

@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using student_management_backend.Config.Auth;
-using student_management_backend.Core.Authorization;
 using student_management_backend.Core.Models;
 
 public record TokenResponse(string token, DateTime tokeExpiryTime);

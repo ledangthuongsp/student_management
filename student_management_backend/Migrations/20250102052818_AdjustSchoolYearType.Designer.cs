@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace student_management_backend.Migrations
 {
     [DbContext(typeof(NeonDbContext))]
-    partial class NeonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250102052818_AdjustSchoolYearType")]
+    partial class AdjustSchoolYearType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +113,7 @@ namespace student_management_backend.Migrations
                         {
                             Id = 1,
                             ClassName = "A4",
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3166),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 15, 884, DateTimeKind.Utc).AddTicks(8509),
                             Grade = 10,
                             SchoolYearId = 1
                         });
@@ -169,21 +172,13 @@ namespace student_management_backend.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("EndApplyingDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Grade")
+                    b.Property<int>("SchoolYearId")
                         .HasColumnType("integer");
-
-                    b.Property<int?>("SchoolYearId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartApplyingDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassId");
+                    b.HasIndex("ClassId")
+                        .IsUnique();
 
                     b.HasIndex("SchoolYearId");
 
@@ -194,10 +189,8 @@ namespace student_management_backend.Migrations
                         {
                             Id = 1,
                             ClassId = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3187),
-                            EndApplyingDate = new DateTime(2026, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3189),
-                            Grade = 10,
-                            StartApplyingDate = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3189)
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 15, 884, DateTimeKind.Utc).AddTicks(8586),
+                            SchoolYearId = 1
                         });
                 });
 
@@ -242,7 +235,7 @@ namespace student_management_backend.Migrations
                             SubjectId = 1,
                             ScheduleId = 1,
                             DayOfWeek = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3263),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 15, 884, DateTimeKind.Utc).AddTicks(8642),
                             EndPeriod = 3,
                             Id = 1,
                             StartPeriod = 1
@@ -277,9 +270,9 @@ namespace student_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(2991),
-                            EndSchoolYear = 2028,
-                            StartSchoolYear = 2025
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 15, 884, DateTimeKind.Utc).AddTicks(8249),
+                            EndSchoolYear = 2026,
+                            StartSchoolYear = 2023
                         });
                 });
 
@@ -312,7 +305,7 @@ namespace student_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3241),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 15, 884, DateTimeKind.Utc).AddTicks(8613),
                             Title = "Toán"
                         });
                 });
@@ -383,7 +376,7 @@ namespace student_management_backend.Migrations
                         {
                             TeacherId = 3,
                             ClassId = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 49, 503, DateTimeKind.Utc).AddTicks(1596),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 16, 423, DateTimeKind.Utc).AddTicks(6612),
                             Id = 1
                         });
                 });
@@ -449,12 +442,12 @@ namespace student_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3287),
-                            DateOfBirth = new DateTime(2025, 1, 3, 3, 18, 48, 955, DateTimeKind.Utc).AddTicks(3290),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 15, 884, DateTimeKind.Utc).AddTicks(8667),
+                            DateOfBirth = new DateTime(2025, 1, 2, 5, 28, 15, 884, DateTimeKind.Utc).AddTicks(8670),
                             Email = "principal@school.com",
                             FullName = "Trinh Dinh A",
                             Gender = 0,
-                            Password = "$2a$11$Q031AjbIEB3cWpyHZZzGr.qBdTJ3EJ83uIPgpwhsMFuOsuiFF35uO",
+                            Password = "$2a$11$jT4BAiOw/m5cbrUIVK87aunwAyEXI2dWq.3LOwFv8gF44O/PY4Fi2",
                             PhoneNumber = "0000000001",
                             Role = 2
                         },
@@ -462,24 +455,24 @@ namespace student_management_backend.Migrations
                         {
                             Id = 2,
                             ClassId = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 49, 91, DateTimeKind.Utc).AddTicks(3167),
-                            DateOfBirth = new DateTime(2025, 1, 3, 3, 18, 49, 91, DateTimeKind.Utc).AddTicks(3173),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 16, 17, DateTimeKind.Utc).AddTicks(9935),
+                            DateOfBirth = new DateTime(2025, 1, 2, 5, 28, 16, 17, DateTimeKind.Utc).AddTicks(9941),
                             Email = "teacher.001@school.com",
                             FullName = "Nguyen Van B",
                             Gender = 0,
-                            Password = "$2a$11$x2a5iki0zbn0rduHPHZHwOB6wpLZr.HjuwaOAj7jjH0DTwF7FyZza",
+                            Password = "$2a$11$Vo2Bow9AiNoH2k9cOP.ise7OBgCRytdtc7OiQIij5BXH2328Ygn4a",
                             PhoneNumber = "0000000002",
                             Role = 1
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 49, 228, DateTimeKind.Utc).AddTicks(5662),
-                            DateOfBirth = new DateTime(2025, 1, 3, 3, 18, 49, 228, DateTimeKind.Utc).AddTicks(5668),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 16, 157, DateTimeKind.Utc).AddTicks(3813),
+                            DateOfBirth = new DateTime(2025, 1, 2, 5, 28, 16, 157, DateTimeKind.Utc).AddTicks(3820),
                             Email = "teacher.002@school.com",
                             FullName = "Tran Thi C",
                             Gender = 0,
-                            Password = "$2a$11$UaOpDme8TwXT67n2gjb7su1lANOy5o5Bx4l9Mwb2QhLe/0p9F9jhG",
+                            Password = "$2a$11$kOMwKlAHw.PBhT0ZH.cIw.yBOKXPFKar8HNO6AdRSigENG6iKD0dW",
                             PhoneNumber = "0000000003",
                             Role = 1
                         },
@@ -487,12 +480,12 @@ namespace student_management_backend.Migrations
                         {
                             Id = 4,
                             ClassId = 1,
-                            CreatedDate = new DateTime(2025, 1, 3, 3, 18, 49, 367, DateTimeKind.Utc).AddTicks(9231),
-                            DateOfBirth = new DateTime(2025, 1, 3, 3, 18, 49, 367, DateTimeKind.Utc).AddTicks(9236),
+                            CreatedDate = new DateTime(2025, 1, 2, 5, 28, 16, 290, DateTimeKind.Utc).AddTicks(3093),
+                            DateOfBirth = new DateTime(2025, 1, 2, 5, 28, 16, 290, DateTimeKind.Utc).AddTicks(3099),
                             Email = "student.001@school.com",
                             FullName = "Nguyen Duc D",
                             Gender = 0,
-                            Password = "$2a$11$EIqU1/g2/tMSLH1xAdS88.VWn66r.p5t3fF/cT/cTMJn/VzNwz96y",
+                            Password = "$2a$11$67BPZqSGc6JBJS6FyM7qSOKpUKADfyZPBRvtmnLOw57qTKekIWYJ.",
                             PhoneNumber = "0000000004",
                             Role = 0
                         });
@@ -558,16 +551,20 @@ namespace student_management_backend.Migrations
             modelBuilder.Entity("student_management_backend.Core.Models.Schedule", b =>
                 {
                     b.HasOne("student_management_backend.Core.Models.Class", "Class")
-                        .WithMany("Schedules")
-                        .HasForeignKey("ClassId")
+                        .WithOne("Schedule")
+                        .HasForeignKey("student_management_backend.Core.Models.Schedule", "ClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("student_management_backend.Core.Models.SchoolYear", null)
+                    b.HasOne("student_management_backend.Core.Models.SchoolYear", "SchoolYear")
                         .WithMany("Schedules")
-                        .HasForeignKey("SchoolYearId");
+                        .HasForeignKey("SchoolYearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Class");
+
+                    b.Navigation("SchoolYear");
                 });
 
             modelBuilder.Entity("student_management_backend.Core.Models.ScheduleSubject", b =>
@@ -645,7 +642,8 @@ namespace student_management_backend.Migrations
                 {
                     b.Navigation("Assignments");
 
-                    b.Navigation("Schedules");
+                    b.Navigation("Schedule")
+                        .IsRequired();
 
                     b.Navigation("TeachClasses");
 

@@ -47,7 +47,7 @@ public class NeonDbContext(DbContextOptions<NeonDbContext> options) : DbContext(
             b.HasKey(x => x.Id);
             b.HasMany(x => x.User).WithOne(x => x.Class).HasForeignKey(x => x.ClassId);
             b.HasMany(x => x.TeachClasses).WithOne(x => x.Class).HasForeignKey(x => x.ClassId);
-            b.HasOne(x => x.Schedule).WithOne(x => x.Class).HasForeignKey<Schedule>(x => x.ClassId);
+            b.HasMany(x => x.Schedules).WithOne(x => x.Class).HasForeignKey(x => x.ClassId);
         });
 
         modelBuilder.Entity<Review>(b =>
@@ -62,8 +62,7 @@ public class NeonDbContext(DbContextOptions<NeonDbContext> options) : DbContext(
         {
             b.ToTable("schedules");
             b.HasKey(x => x.Id);
-            b.HasOne(x => x.SchoolYear).WithMany(x => x.Schedules).HasForeignKey(x => x.SchoolYearId);
-            b.HasOne(x => x.Class).WithOne(x => x.Schedule).HasForeignKey<Schedule>(x => x.ClassId);
+            b.HasOne(x => x.Class).WithMany(x => x.Schedules).HasForeignKey(x => x.ClassId);
             b.HasMany(x => x.ScheduleSubjects).WithOne(x => x.Schedule).HasForeignKey(x => x.ScheduleId);
         });
 
@@ -79,7 +78,6 @@ public class NeonDbContext(DbContextOptions<NeonDbContext> options) : DbContext(
         {
             b.ToTable("school_years");
             b.HasKey(x => x.Id);
-            b.HasMany(x => x.Schedules).WithOne(x => x.SchoolYear).HasForeignKey(x => x.SchoolYearId);
             b.HasMany(x => x.Classes).WithOne(x => x.SchoolYear).HasForeignKey(x => x.SchoolYearId);
         });
 

@@ -4,9 +4,11 @@ using student_management_backend.DTOs.Request;
 using student_management_backend.Common.Exceptions;
 using student_management_backend.Core.Models;
 using student_management_backend.DTOs.Response;
+using Microsoft.AspNetCore.Authorization;
 
 namespace student_management_backend.Controllers;
 
+[Authorize]
 [Route("api/submit")]
 [ApiController]
 public class SubmitController : ControllerBase
@@ -18,16 +20,18 @@ public class SubmitController : ControllerBase
         _context = context;
     }
 
+    [Authorize(Roles = nameof(EUserRole.Student))]
     [HttpPost("")]
     public async Task<IActionResult> CreateSubmitForAssignment([FromBody] CreatSubmitRequest body)
     {
         var assignment = await _context.Assignment.FirstOrDefaultAsync(x => x.Id == body.AssignmentId) ?? throw new NotFoundException("Assignment doesn't exist.");
+        var user = HttpContext.Items["User"] as User;
 
         var submit = new Submit()
         {
             AssignmentId = body.AssignmentId,
             Description = body.Description,
-            StudentId = body.StudentId,
+            StudentId = user.Id,
             AttachFile = body.FileUrl
         };
 
@@ -37,10 +41,16 @@ public class SubmitController : ControllerBase
         return Ok(submit.Id);
     }
 
+    [Authorize(Roles = nameof(EUserRole.Student))]
     [HttpDelete("{submitId:int}")]
     public async Task<IActionResult> DeleteSubmit(int submitId)
     {
-        var submit = await _context.Submit.FirstOrDefaultAsync(x => x.Id == submitId) ?? throw new NotFoundException("Submit doesn't exist");
+        var submit = await _context.Submit.FirstOrDefaultAsync(x => x.Id == submitId) ?? throw new NotFoundException("Submit doesn't exist.");
+        var user = HttpContext.Items["User"] as User;
+        if (submit.StudentId != user.Id)
+        {
+            throw new ForbiddenException("You are not the owner of this submit.");
+        }
 
         submit.DeletedDate = DateTime.UtcNow;
 
@@ -49,23 +59,28 @@ public class SubmitController : ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = nameof(EUserRole.Student))]
     [HttpPut("{submitId:int}")]
     public async Task<IActionResult> UpdateSubmit(int submitId, [FromBody] UpdateSubmitRequest body)
     {
-        var submit = await _context.Submit.FirstOrDefaultAsync(x => x.Id == submitId) ?? throw new NotFoundException("Submit doesn't exist");
+        var submit = await _context.Submit.FirstOrDefaultAsync(x => x.Id == submitId) ?? throw new NotFoundException("Submit doesn't exist.");
+        var user = HttpContext.Items["User"] as User;
+        if (submit.StudentId != user.Id)
+        {
+            throw new ForbiddenException("You are not the owner of this submit.");
+        }
 
         var entry = _context.Entry(submit);
         foreach (var property in entry.Properties)
         {
-            // Get the matching property from the body object
             var bodyProperty = body.GetType().GetProperty(property.Metadata.Name);
-            if (bodyProperty != null) // Ensure the property exists in the body
+            if (bodyProperty != null) 
             {
-                var newValue = bodyProperty.GetValue(body); // Get the value from the body
-                if (newValue != null) // Only update non-null values
+                var newValue = bodyProperty.GetValue(body); 
+                if (newValue != null) 
                 {
-                    property.CurrentValue = newValue; // Update the property
-                    property.IsModified = true;      // Mark as modified
+                    property.CurrentValue = newValue; 
+                    property.IsModified = true;
                 }
             }
         }
@@ -89,12 +104,12 @@ public class SubmitController : ControllerBase
                 Owner = new UserResponse()
                 {
                     Id = x.Student.Id,
-                    Email = x.Student.Email,
-                    FullName = x.Student.FullName,
+                    Email = x.Student.Email ?? "",
+                    FullName = x.Student.FullName ?? "",
                     AvatarUrl = x.Student.AvatarUrl,
                 }
             })
-            .FirstOrDefaultAsync() ?? throw new NotFoundException("Submit doesn't exist");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException("Submit doesn't exist.");
 
         return submit;
     }
@@ -113,8 +128,8 @@ public class SubmitController : ControllerBase
                 Owner = new UserResponse()
                 {
                     Id = x.Student.Id,
-                    Email = x.Student.Email,
-                    FullName = x.Student.FullName,
+                    Email = x.Student.Email ?? "",
+                    FullName = x.Student.FullName ?? "",
                     AvatarUrl = x.Student.AvatarUrl,
                 }
             })
@@ -137,8 +152,8 @@ public class SubmitController : ControllerBase
                 Owner = new UserResponse()
                 {
                     Id = x.Student.Id,
-                    Email = x.Student.Email,
-                    FullName = x.Student.FullName,
+                    Email = x.Student.Email ?? "",
+                    FullName = x.Student.FullName ?? "",
                     AvatarUrl = x.Student.AvatarUrl,
                 }
             })

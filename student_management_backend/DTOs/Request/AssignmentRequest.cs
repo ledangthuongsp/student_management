@@ -11,18 +11,17 @@ public class CreateAssignmentRequest
     public string? Description { get; set; }
     public DateTime DueDate { get; set; }
     public int SubjectId { get; set; }
-    public int TeacherId { get; set; }
     public int ClassId { get; set; }
 }
 
 public class UpdateAssignmentRequest
 {
     public string? Title { get; set; }
-    public int? Grade { get; set; }
-    public int? Semester { get; set; } 
-    public string? Type { get; set; } 
+    //public int? Grade { get; set; }
+    //public int? Semester { get; set; } 
+    //public string? Type { get; set; } 
     public string? Description { get; set; }
     public DateTime? DueDate { get; set; }
-    public int? SubjectId { get; set; }
-    public int? ClassId { get; set; }
+    //public int? SubjectId { get; set; }
+    //public int? ClassId { get; set; }
 }

@@ -8,3 +8,9 @@ public class JwtSettings
     public int TokenExpirationInDays { get; set; }
     public int TokenExpirationInMinutes { get; set; }
 }
+
+public static class InternalClaims
+{
+    public const string Fullname = "fullName";
+    public const string ImageUrl = "image_url";
+}

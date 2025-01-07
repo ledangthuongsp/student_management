@@ -13,7 +13,6 @@ public class Assignment : AuditableEntity
     public int SubjectId { get; set; }
     public int TeacherId { get; set; }
     public int ClassId { get; set; }
-
     public virtual Subject Subject { get; private set; } = default!;
     public virtual User User { get; private set; } = default!;
     public virtual Class Class { get; private set; } = default!;

@@ -3,7 +3,6 @@
 public class CreateReviewRequest
 {
     public int SubmitId { get; set; }
-    public int TeacherId { get; set; }
     public double Score { get; set; }
     public string? Comment { get; set; }
 }
